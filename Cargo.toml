@@ -1,0 +1,45 @@
+[package]
+name = "l-rs"
+version = "0.1.0"
+edition = "2021"
+description = "Rust client for the L database IPC protocol"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/l-labs/rust_ipc"
+
+[dependencies]
+# Library has no required deps; these are pulled in by the `lconn` feature.
+rustyline  = { version = "14", optional = true }
+clap       = { version = "4", features = ["derive"], optional = true }
+anyhow     = { version = "1", optional = true }
+libc       = { version = "0.2", optional = true }
+csv        = { version = "1", optional = true }
+serde_json = { version = "1", optional = true }
+
+[features]
+default  = ["lconn"]
+csv-io   = ["dep:csv"]
+json-io  = ["dep:serde_json"]
+lconn    = ["dep:rustyline", "dep:clap", "dep:anyhow", "dep:libc",
+            "csv-io", "json-io"]
+
+[[bin]]
+name = "lconn"
+path = "src/bin/lconn.rs"
+required-features = ["lconn"]
+
+[[example]]
+name = "connect"
+path = "examples/connect.rs"
+
+[[example]]
+name = "tables"
+path = "examples/tables.rs"
+
+[[example]]
+name = "stress"
+path = "examples/stress.rs"
+
+[[example]]
+name = "benchmark"
+path = "examples/benchmark.rs"
